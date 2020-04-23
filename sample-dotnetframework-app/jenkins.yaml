@@ -11,7 +11,7 @@ jobs:
       pipelineJob('pipeline') {
           definition {
               cpsScm {
-                  scriptPath 'Jenkinsfile'
+                  scriptPath 'sample-dotnetframework-app/Jenkinsfile'
                   scm {
                     git {
                         remote { url 'https://github.com/albertnoble/SampleNetApp.git' }
