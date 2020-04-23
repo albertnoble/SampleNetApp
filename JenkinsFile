@@ -4,7 +4,7 @@ pipeline {
 	stages('restore') {
 		steps {
 			bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
-			bat "\"${tool 'windows 2019'\" C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuation=Release /pPlatform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:OutputPath=Bin /p:langversion=latest"
+			bat "\"${tool 'windows 2019'\" C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuation=Release /pPlatform=\"Any CPU\" /p:ProductVersion=1.0.0.0 /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:OutputPath=Bin /p:langversion=latest"
 		}
 	
 	}
