@@ -1,5 +1,5 @@
 node
 {
     stage 'Restore NuGet'
-        bat 'nuget restore C:\Users\SirAl\jenkins\sample-dotnetframework-app\SampleNetApp\SampleApplication.sln'
+        bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 }
