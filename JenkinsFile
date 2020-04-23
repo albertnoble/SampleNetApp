@@ -1,5 +1,10 @@
 node
 {
     stage 'Restore NuGet'
-        bat 'dotnet restore /sample-dotnetframework-app/SampleApplication/SampleApplication.sln'
+        bat 'nuget restore /sample-dotnetframework-app/SampleApplication/SampleApplication.sln'
 }
+
+
+
+yesterday:
+
