@@ -3,9 +3,12 @@ pipeline {
 
 	
 	stages('restore') {
-		steps {
-			bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
+		stage {
+			steps {
+				bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
+			}
 		}
+		
 	
 	}
 
