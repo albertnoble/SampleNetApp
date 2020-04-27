@@ -4,7 +4,7 @@ pipeline {
 		stage('restore') {
 			agent { label 'windows' }
 			steps {
-				bat 'nuget restore /sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
+				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 			}
 		}
 		
