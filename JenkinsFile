@@ -5,7 +5,6 @@ pipeline {
 	stages('restore') {
 		steps {
 			bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
-			bat "\"${tool 'windows 2019'\" C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuation=Release /pPlatform=\"Any CPU\""
 		}
 	
 	}
