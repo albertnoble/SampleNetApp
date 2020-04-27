@@ -1,7 +1,7 @@
 pipeline {
 	agent none
-	stages('restore') {
-		stage {
+	stages {
+		stage('restore') {
 			agent { label 'windows' }
 			steps {
 				bat 'nuget restore C:/Users/SirAl/jenkins/sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
