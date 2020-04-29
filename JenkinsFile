@@ -7,6 +7,10 @@ pipeline {
 				bat "IF EXIST \"c:/build/SimpleWebApp\" RMDIR /S /Q \"c:/build/SimpleWebApp\""
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 				bat "\"${tool 'msbuild'}\"  sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /nr:false /m /p:OutDir=c:\\build\\SimpleWebApp"
+				powershell 'Copy-Item -Path "C:\\build\\SimpleWebApp_PublishedWebsites\\*" -Destination "C:\\build\\SimpleWebApp\\_PublishedWebsites" -Recurse'
+				powershell 'Copy-Item "BuildandDeployment.ps1" -Destination "C:\\build\\SimpleWebApp"'
+				powershell 'Copy-Item "DeploymentMap_FassNotary.xml" -Destination "C:\\build\\SimpleWebApp"'
+				powershell './CreateConfigFiles_SCM.ps1 -StagingDir "C:\\build\\SimpleWebApp"'
 			}
 		}
 		
