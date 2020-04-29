@@ -6,7 +6,7 @@ pipeline {
 			steps {
 				bat "IF EXIST \"c:/build/SimpleWebApp\" RMDIR /S /Q \"c:/build/SimpleWebApp\""
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
-				bat "\"${tool 'msbuild'}\"  sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /nr:false /mp:OutDir=c:\\build\\SimpleWebApp"
+				bat "\"${tool 'msbuild'}\"  sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /nr:false
 			}
 		}
 		
