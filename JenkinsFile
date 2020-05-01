@@ -1,16 +1,51 @@
+@Library('Jenkins-Shared-Library')_
+
 pipeline {
-	agent none
+	agent { label 'windows' }
+    parameters {
+			string(name: 'aws_profile', defaultValue: 'aws-nonprod', description: 'Provide aws profile')
+			string(name: 'aws_region', defaultValue: 'us-west-2', description: 'Provide aws region')
+			gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+            choice(name: 'build_type', choices:['Release', 'Debug'], description: 'Build a Release or Debug version of deployment artifacts.  A Debug build is used for Veracode scanning.')
+	}
 	stages {
-		stage('restore') {
-			agent { label 'windows' }
+		stage('Output Current Build Information') {
 			steps {
-				bat "IF EXIST \"c:/build/SimpleWebApp\" RMDIR /S /Q \"c:/build/SimpleWebApp\""
+				script {
+					currentBuild.description = """ Profile: ${params.aws_profile} Branch: ${params.BRANCH} Region: ${params.aws_region} """
+				}
+		        bat "\"${tool 'msbuild'}\" -version"
+			}
+		}
+        // stage('Assume Role') {
+        //     steps {
+        //         script {
+        //             wrap([$class: 'AnsiColorBuildWrapper', colorMapName: 'xterm']) {
+        //                 assume_role.assume_role(params.aws_profile)
+        //             }
+        //         }
+        //     }
+        // }
+
+
+		stage('restore') {
+			steps {
+
+				// Download nuget packages
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
-				bat "\"${tool 'msbuild'}\"  sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=Release /p:Platform=\"Any CPU\" /nr:false /m /p:OutDir=c:\\build\\SimpleWebApp"
-				powershell 'Copy-Item -Path "C:\\build\\SimpleWebApp_PublishedWebsites\\*" -Destination "C:\\build\\SimpleWebApp\\_PublishedWebsites" -Recurse'
-				powershell 'Copy-Item "BuildandDeployment.ps1" -Destination "C:\\build\\SimpleWebApp"'
-				powershell 'Copy-Item "DeploymentMap_FassNotary.xml" -Destination "C:\\build\\SimpleWebApp"'
-				powershell './CreateConfigFiles_SCM.ps1 -StagingDir "C:\\build\\SimpleWebApp"'
+				
+				// Version source code
+                bat 'choco install GitVersion.Portable -y'
+                bat 'GitVersion.exe /updateassemblyinfo'
+			
+				// Build the solution
+		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=${params.build_type} /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /p:OutDir=Bin /p:langversion=latest"
+
+ 				// // Move C# aspx pages to new location
+                // powershell "Move-Item -Path 'Website/SCIWebsite/SCI.Framework.Web/Bin/SCI.Framework.Web/_PublishedWebsites/SCI.Framework.Web' -Destination 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite' -force"
+                // // Combine bin directories
+                // powershell "Copy-Item -Path 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite/SCI.Framework.Web/Bin' -Destination 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite' -force"
+                
 			}
 		}
 		
