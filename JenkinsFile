@@ -1,17 +1,16 @@
 pipeline {
 	agent { label 'windows' }
-    // parameters {
-	// 		string(name: 'aws_profile', defaultValue: 'aws-nonprod', description: 'Provide aws profile')
-	// 		string(name: 'aws_region', defaultValue: 'us-west-2', description: 'Provide aws region')
-	// 		gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
-    //         choice(name: 'build_type', choices:['Release', 'Debug'], description: 'Build a Release or Debug version of deployment artifacts.  A Debug build is used for Veracode scanning.')
-	// }
+    parameters {
+			string(name: 'aws_profile', defaultValue: 'aws-nonprod', description: 'Provide aws profile')
+			string(name: 'aws_region', defaultValue: 'us-west-2', description: 'Provide aws region')
+			gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+            choice(name: 'build_type', choices:['Release', 'Debug'], description: 'Build a Release or Debug version of deployment artifacts.  A Debug build is used for Veracode scanning.')
+	}
 	stages {
 		stage('Output Current Build Information') {
 			steps {
 				script {
-					//currentBuild.description = """ Profile: ${params.aws_profile} Branch: ${params.BRANCH} Region: ${params.aws_region} """
-					currentBuild.description = """ Profile: test_Profile Branch: test_Branch Region: test_Region """
+					currentBuild.description = """ Profile: ${params.aws_profile} Branch: ${params.BRANCH} Region: ${params.aws_region} """
 				}
 		        bat "\"${tool 'msbuild'}\" -version"
 			}
@@ -27,7 +26,7 @@ pipeline {
         // }
 
 
-		stage('restore') {
+		stage('Build') {
 			steps {
 
 				bat "IF EXIST \"c:/build/sampleapp\" RMDIR /S /Q \"c:/build/sampleapp\""
@@ -46,7 +45,7 @@ pipeline {
 			}
 		}
 
-		stage('S3-Upload-Debug') {
+		stage('Upload') {
             steps {
                 // Remove *.pdb
                 powershell "Get-ChildItem 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/bin' -filter '*.pdb' | Remove-Item -force"
