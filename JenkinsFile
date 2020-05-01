@@ -63,7 +63,7 @@ pipeline {
 
 	post {
 		always {
-			echo 'testing'
+			echo 'Always run :|'
 		}
 		success {
 			echo 'successful run :)'
@@ -75,7 +75,7 @@ pipeline {
 			echo 'unstable :O'
 		}
 		changed {
-			echo 'chaned :]'
+			echo 'changed :]'
 		}
 	
 	}
