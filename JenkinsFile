@@ -63,10 +63,10 @@ pipeline {
 
 	post {
 		always {
-			echo 'Always run :|'
+			echo 'Always run this'
 		}
 		success {
-			echo 'successful run :)'
+			echo 'Successful run :)'
 		}
 		failure {
 			echo 'Failure :('
@@ -75,7 +75,7 @@ pipeline {
 			echo 'unstable :O'
 		}
 		changed {
-			echo 'changed :]'
+			echo 'stages changed :]'
 		}
 	
 	}
