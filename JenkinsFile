@@ -2,7 +2,7 @@ pipeline {
 	agent { label 'windows' }
     parameters {
 			string(name: 'aws_profile', defaultValue: 'aws-test', description: 'Provide aws profile')
-			string(name: 'aws_region', defaultValue: 'us-west, description: 'Provide aws region')
+			string(name: 'aws_region', defaultValue: 'us-west', description: 'Provide aws region')
 			gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
             choice(name: 'build_type', choices:['Debug'], description: 'Build a Release or Debug version')
 	}
