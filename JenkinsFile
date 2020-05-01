@@ -46,9 +46,9 @@ pipeline {
 			}
 		}
 
-		stage('S3-Upload-Release') {
+		stage('S3-Upload-Debug') {
             when {
-                expression {params.build_type == 'Release'}
+                expression {params.build_type == 'Debug'}
             }
             steps {
                 // Remove *.pdb
