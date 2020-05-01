@@ -1,5 +1,3 @@
-@Library('Jenkins-Shared-Library')_
-
 pipeline {
 	agent { label 'windows' }
     parameters {
