@@ -30,6 +30,8 @@ pipeline {
 		stage('restore') {
 			steps {
 
+				bat "IF EXIST \"c:/build/sampleapp\" RMDIR /S /Q \"c:/build/sampleapp\""
+
 				// Download nuget packages
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 			
