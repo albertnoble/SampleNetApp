@@ -51,7 +51,7 @@ pipeline {
                 // Remove *.pdb
                 powershell "Get-ChildItem 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/bin' -filter '*.pdb' | Remove-Item -force"
                 // Create zip for deployment
-				powershell "7z.exe a -tzip -r SCI.Website.zip 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/**' "
+				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r SCI.Website.zip 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/**' "
                 // Upload files
                 // withCredentials([string(credentialsId: 's3-sci-stg-kms-id', variable: 'Secret')]) {
                 //     powershell """aws s3 cp SCI.Website.zip s3://sci-stg/Web/${params.BRANCH}/SCI.Website.zip --sse aws:kms --sse-kms-key-id ${Secret} --profile aws-nonprod"""
