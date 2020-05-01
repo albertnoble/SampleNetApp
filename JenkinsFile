@@ -7,7 +7,7 @@ pipeline {
             choice(name: 'build_type', choices:['Debug'], description: 'Build a Release or Debug version')
 	}
 	stages {
-		stage('Output Current Build Information') {
+		stage('Build Information') {
 			steps {
 				script {
 					currentBuild.description = """ Profile: ${params.aws_profile} Branch: ${params.BRANCH} Region: ${params.aws_region} """
