@@ -47,9 +47,6 @@ pipeline {
 		}
 
 		stage('S3-Upload-Debug') {
-            when {
-                expression {params.build_type == 'Debug'}
-            }
             steps {
                 // Remove *.pdb
                 powershell "Get-ChildItem 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/bin' -filter '*.pdb' | Remove-Item -force"
