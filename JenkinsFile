@@ -36,7 +36,7 @@ pipeline {
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 			
 				// Build the solution
-		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=${params.build_type} /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /nr:false /m /p:OutDir=c:\\build\\sampleapp /p:langversion=latest"
+		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /nr:false /m /p:OutDir=c:\\build\\sampleapp /p:Configuration=Release /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /p:langversion=latest"
 
  				// //Move C# aspx pages to new location
                 //powershell "Move-Item -Path 'Website/SCIWebsite/SCI.Framework.Web/Bin/SCI.Framework.Web/_PublishedWebsites/SCI.Framework.Web' -Destination 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite' -force"
