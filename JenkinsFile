@@ -32,10 +32,6 @@ pipeline {
 
 				// Download nuget packages
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
-				
-				// Version source code
-                bat 'choco install GitVersion.Portable -y'
-                bat 'GitVersion.exe /updateassemblyinfo'
 			
 				// Build the solution
 		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /p:Configuration=${params.build_type} /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /p:OutDir=Bin /p:langversion=latest"
