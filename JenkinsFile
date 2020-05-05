@@ -28,7 +28,6 @@ pipeline {
 
 		stage('Upload') {
             steps {
-				bat "pwd"
 				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r Website.zip '.\\sample-dotnetframework-app\\SampleNetApp\\SampleApplication-Web\\bin\\publish\\*' "
                 // Upload files
                 // withCredentials([string(credentialsId: 's3-sci-stg-kms-id', variable: 'Secret')]) {
