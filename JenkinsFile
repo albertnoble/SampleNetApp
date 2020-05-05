@@ -18,54 +18,41 @@ pipeline {
 		stage('Build') {
 			steps {
 
-				bat "IF EXIST \"c:/build/sampleapp\" RMDIR /S /Q \"c:/build/sampleapp\""
-
 				// Download nuget packages
 				bat 'nuget restore sample-dotnetframework-app/SampleNetApp/SampleApplication.sln'
 			
 				// Build the solution
-		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /nr:false /m /p:OutDir=c:\\build\\sampleapp /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /p:langversion=latest"
-
- 				//Move C# aspx pages to new location
-                powershell "Move-Item -Path 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web' -Destination 'C:/build/sampleapp/_PublishedWebsites' -Recurse"
-                // // Combine bin directories
-                // powershell "Copy-Item -Path 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite/SCI.Framework.Web/Bin' -Destination 'Website/SCIWebsite/Bin/SCIWebsite/_PublishedWebsites/SCIWebsite' -force"
-                
+		        bat "\"${tool 'msbuild'}\" sample-dotnetframework-app/SampleNetApp/SampleApplication.sln /nr:false /m -p:OutputPath=.\\bin\\publish /p:Configuration=Debug /p:Platform=\"Any CPU\" /p:ProductVersion=1.0.0.${env.BUILD_NUMBER} /p:GenerateBuildInfoConfigFile=false /p:GenerateProjectSpecificOutputFolder=True /p:SkipInvalidConfigurations=true /p:langversion=latest"
 			}
 		}
 
 		stage('Upload') {
             steps {
-                // Remove *.pdb
-                powershell "Get-ChildItem 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/bin' -filter '*.pdb' | Remove-Item -force"
-                // Create zip for deployment
-				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r SCI.Website.zip 'C:/build/sampleapp/SampleApplication-Web/_PublishedWebsites/SampleApplication-Web/**' "
+				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r SCI.Website.zip '.\\SampleNetApp\\bin\\publish\\*' "
                 // Upload files
                 // withCredentials([string(credentialsId: 's3-sci-stg-kms-id', variable: 'Secret')]) {
                 //     powershell """aws s3 cp SCI.Website.zip s3://sci-stg/Web/${params.BRANCH}/SCI.Website.zip --sse aws:kms --sse-kms-key-id ${Secret} --profile aws-nonprod"""
                 //  }
             }
         }
-		
-	
 	}
 
 	post {
 		always {
-			echo 'Always run this'
-		}
-		success {
-			echo 'Successful run :)'
-		}
-		failure {
-			echo 'Failure :('
-		}
-		unstable {
-			echo 'unstable :O'
-		}
-		changed {
-			echo 'stages changed :]'
-		}
-	
+            echo 'This will always run'
+        }
+        success {
+            echo 'This will run only if successful'
+        }
+        failure {
+            echo 'This will run only if failed'
+        }
+        unstable {
+            echo 'This will run only if the run was marked as unstable'
+        }
+        changed {
+            echo 'This will run only if the state of the Pipeline has changed'
+            echo 'For example, if the Pipeline was previously failing but is now successful'
+        }
 	}
 }
