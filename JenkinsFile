@@ -28,7 +28,7 @@ pipeline {
 
 		stage('Upload') {
             steps {
-				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r SCI.Website.zip '.\\SampleNetApp\\bin\\publish\\*' "
+				powershell "C:/jenkins/workspace/pipeline/tools/7z.exe a -tzip -r Website.zip '.\\SampleApplication-Web\\bin\\publish\\*' "
                 // Upload files
                 // withCredentials([string(credentialsId: 's3-sci-stg-kms-id', variable: 'Secret')]) {
                 //     powershell """aws s3 cp SCI.Website.zip s3://sci-stg/Web/${params.BRANCH}/SCI.Website.zip --sse aws:kms --sse-kms-key-id ${Secret} --profile aws-nonprod"""
